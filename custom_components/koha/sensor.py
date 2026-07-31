@@ -74,7 +74,7 @@ class LoanCountSensor(KohaBaseSensor):
                 {
                     "title": c.title,
                     "author": c.author,
-                    "due_date": c.due_date.isoformat() if c.due_date else None,
+                    "due_date": c.due_date.strftime("%d.%m.%Y") if c.due_date else None,
                     "barcode": c.barcode,
                     "overdue": c.is_overdue,
                     "due_today": c.is_due_today,
@@ -100,4 +100,4 @@ class NextDueSensor(KohaBaseSensor):
         due_dates = [c.due_date for c in checkouts if c.due_date is not None]
         if not due_dates:
             return None
-        return min(due_dates).isoformat()
+        return min(due_dates).strftime("%d.%m.%Y")
