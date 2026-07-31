@@ -56,6 +56,7 @@ Attribute `checkouts` is a list of dicts, one per loan:
 | `due_today` | bool | Due date is today |
 | `renewals_used` | int | Renewals already used |
 | `renewals_max` | int | Maximum allowed renewals |
+| `renewals_left` | int | Renewals remaining (`renewals_max - renewals_used`) |
 
 Additional attributes:
 

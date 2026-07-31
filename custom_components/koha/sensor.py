@@ -80,6 +80,9 @@ class LoanCountSensor(KohaBaseSensor):
                     "due_today": c.is_due_today,
                     "renewals_used": c.renewals_used,
                     "renewals_max": c.renewals_max,
+                    "renewals_left": c.renewals_max - c.renewals_used
+                    if c.renewals_max is not None and c.renewals_used is not None
+                    else None,
                 }
                 for c in checkouts
             ],
