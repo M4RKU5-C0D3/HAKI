@@ -1,0 +1,21 @@
+alias: "Bücherei - heute fällig"
+description: >-
+  Benachrichtigt aufs Handy, sobald Medien fällig sind (morgens um 08:00 und
+  sofort beim Umschalten des Binärsensors).
+triggers:
+  - trigger: time
+    at: "08:00:00"
+  - trigger: state
+    entity_id: binary_sensor.bucherei_library_due_today
+    to: "on"
+conditions:
+  - condition: state
+    entity_id: binary_sensor.bucherei_library_due_today
+    state: "on"
+actions:
+  - action: notify.mobile_app_markus_handy
+    data:
+      title: "Bücherei"
+      message: >-
+        {% set loans = state_attr('sensor.bucherei_library_loans', 'checkouts') %}{% set due = loans | selectattr('due_today') | list %}{% if due %}Diese Medien sind heute fällig:{% for l in due %} - {{ l.title }}{% if l.author %} ({{ l.author }}){% endif %}{% endfor %}{% endif %}
+mode: single
