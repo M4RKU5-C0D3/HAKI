@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Koha",
+        "description": "Enter your library's Koha OPAC URL and login credentials.",
+        "data": {
+          "url": "Library OPAC URL",
+          "userid": "Card number / Username",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "auth": "Invalid credentials or login failed",
+      "cannot_connect": "Could not connect to the library server"
+    }
+  }
+}

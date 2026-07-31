@@ -1,0 +1,6 @@
+DOMAIN = "koha"
+CONF_URL = "url"
+CONF_USERID = "userid"
+CONF_PASSWORD = "password"
+
+SCAN_INTERVAL_SECONDS = 3600
