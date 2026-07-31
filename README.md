@@ -16,10 +16,18 @@ So the integration uses the OPAC account page (`/cgi-bin/koha/opac-user.pl`) aft
 
 ## Installation
 
+### Via HACS
+
+1. HACS → ⋮ → **Custom repositories** → add `M4RKU5-C0D3/HAKI`, category **Integration**
+2. Install "Koha Library" from HACS
+3. Restart Home Assistant
+
+### Manual
+
 1. Copy the `custom_components/koha/` directory into your HA `config/custom_components/koha/`
 2. Restart Home Assistant
-3. Go to **Settings → Devices & Services → Add Integration** → search **"Koha"**
-4. Enter your library URL, card number, and password
+
+Then go to **Settings → Devices & Services → Add Integration** → search **"Koha"** and enter your library URL, card number, and password.
 
 Entity IDs are prefixed with your config entry title — e.g. a config titled "Bücherei" produces `sensor.bucherei_library_loans`.
 
@@ -42,7 +50,7 @@ Attribute `checkouts` is a list of dicts, one per loan:
 |---|---|---|
 | `title` | str | Item title |
 | `author` | str | Item author |
-| `due_date` | str (ISO) | Due date, e.g. `2026-08-22` |
+| `due_date` | str | Due date, German format, e.g. `22.08.2026` |
 | `barcode` | str | Item barcode |
 | `overdue` | bool | Due date is in the past |
 | `due_today` | bool | Due date is today |

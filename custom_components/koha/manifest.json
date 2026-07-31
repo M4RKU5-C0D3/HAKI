@@ -7,7 +7,7 @@
   "codeowners": [],
   "config_flow": true,
   "iot_class": "cloud_polling",
-  "documentation": "https://github.com/your/koha-ha",
-  "issue_tracker": "https://github.com/your/koha-ha/issues",
+  "documentation": "https://github.com/M4RKU5-C0D3/HAKI",
+  "issue_tracker": "https://github.com/M4RKU5-C0D3/HAKI/issues",
   "loggers": ["custom_components.koha"]
 }
