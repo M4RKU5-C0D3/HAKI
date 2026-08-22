@@ -84,44 +84,13 @@ The action `koha.renew_loan` renews a single borrowed item through the OPAC — 
 
 One of `barcode`/`title` is required; exactly one item is renewed per call. The action returns a response with `title`, `old_due_date`, `new_due_date` and `renewals_used`/`renewals_max`. If Koha refuses (renewal limit reached, item on hold, …), it raises an error instead.
 
-```yaml
-action: koha.renew_loan
-data:
-  barcode: "0012345678"
-```
+A ready-to-use example lives in [`examples/renew_loan_action.yaml`](examples/renew_loan_action.yaml).
 
 ## Flex Table
 
-For a tabular display of all loans, use the community card **flex-table-card** (install via HACS → Frontend). It expands the `checkouts` attribute into one row per loan. The last column renders a renew button per row: tapping it calls `koha.renew_loan` with that row's barcode (passed from a hidden column via `col[3]`), asks for confirmation, and only shows a button while renewals are left:
+For a tabular display of all loans, use the community card **flex-table-card** (install via HACS → Frontend). It expands the `checkouts` attribute into one row per loan.
 
-```yaml
-type: custom:flex-table-card
-title: Alle Ausleihen
-entities:
-  include: sensor.bucherei_library_loans
-columns:
-  - name: Titel
-    data: checkouts.title
-  - name: Fällig
-    data: checkouts.due_date
-  - name: Verl.
-    data: checkouts.renewals_used
-  - name: barcode
-    data: checkouts.barcode
-    hidden: true
-  - name: ""
-    data: checkouts.renewals_left
-    align: center
-    modify: x > 0 ? '<ha-icon icon="mdi:arrow-u-right-top"></ha-icon>' : '—'
-    tap_action:
-      action: perform-action
-      perform_action: koha.renew_loan
-      target: {}
-      data:
-        barcode: col[3]
-      confirmation:
-        text: Ausleihe „col[0]“ jetzt verlängern?
-```
+A complete dashboard example lives in [`examples/flex_table_card.yaml`](examples/flex_table_card.yaml): besides title, due date and renewal count it renders a renew button per row — tapping it calls `koha.renew_loan` with that row's barcode (passed from a hidden column via `col[3]`), asks for confirmation, and only shows a button while renewals are left.
 
 ## Disclaimer
 

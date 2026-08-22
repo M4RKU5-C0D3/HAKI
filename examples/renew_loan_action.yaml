@@ -1,0 +1,8 @@
+# Einzelne Ausleihe per Aktion verlängern.
+# Testbar über Entwicklerwerkzeuge → Aktionen ("Antwort zurückgeben" aktivieren).
+action: koha.renew_loan
+data:
+  # Entweder exakten Barcode angeben …
+  # barcode: "0012345678"
+  # … oder einen Teil des Titels (Groß-/Kleinschreibung egal):
+  title: Medusa

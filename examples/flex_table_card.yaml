@@ -1,0 +1,36 @@
+# Alle Ausleihen als Tabelle mit Verlängern-Button pro Reihe.
+# Benötigt flex-table-card (HACS → Frontend).
+# Den Entity-Namen an den eigenen Config-Entry-Titel anpassen
+# (hier: Config-Entry "Bücherei" → sensor.bucherei_library_loans).
+type: custom:flex-table-card
+title: Ausgeliehen
+sort_by:
+  - checkouts.due_date-
+  - checkouts.renewals_left+
+entities:
+  include: sensor.bucherei_library_loans
+columns:
+  - name: Medien
+    data: checkouts.title
+  - name: Abgabe
+    data: checkouts.due_date
+  - name: Verl.
+    data: checkouts.renewals_left
+    modify: x ?? 0
+  - name: barcode
+    data: checkouts.barcode
+    hidden: true
+  - name: ""
+    data: checkouts.renewals_left
+    align: center
+    modify: >-
+      x > 0 ? '<ha-icon icon="mdi:autorenew"></ha-icon>' : '<ha-icon
+      icon="mdi:autorenew-off"></ha-icon>'
+    tap_action:
+      action: perform-action
+      perform_action: koha.renew_loan
+      target: {}
+      data:
+        barcode: col[3]
+      confirmation:
+        text: Ausleihe „col[0]“ jetzt verlängern?
