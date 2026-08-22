@@ -1,0 +1,30 @@
+renew_loan:
+  name: Renew loan
+  description: >-
+    Renews a single borrowed item via the library OPAC. This consumes one of
+    the allowed renewals for that item.
+  fields:
+    barcode:
+      name: Barcode
+      description: Barcode of the item to renew (exact match). Either this or title is required.
+      example: "0012345678"
+      selector:
+        text:
+    title:
+      name: Title
+      description: Part of the item title to renew (case-insensitive). Used when no barcode is given.
+      example: Medusa
+      selector:
+        text:
+    config_entry_id:
+      name: Library
+      description: Which configured library to use. Optional if only one is set up.
+      selector:
+        config_entry:
+          integration: koha
+    entity_id:
+      name: Entity
+      description: Any entity of this integration, used to pick the library when several are configured.
+      selector:
+        entity:
+          integration: koha

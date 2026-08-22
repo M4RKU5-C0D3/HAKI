@@ -59,6 +59,7 @@ Attribute `checkouts` is a list of dicts, one per loan:
 | `author` | str | Item author |
 | `due_date` | str | Due date, German format, e.g. `22.08.2026` |
 | `barcode` | str | Item barcode |
+| `item_number` | int | Internal Koha item number (used by the renew action) |
 | `overdue` | bool | Due date is in the past |
 | `due_today` | bool | Due date is today |
 | `renewals_used` | int | Renewals already used |
@@ -70,9 +71,28 @@ Additional attributes:
 - `overdue_count` — number of overdue items
 - `due_today_count` — number of items due today
 
+## Renewing a loan
+
+The action `koha.renew_loan` renews a single borrowed item through the OPAC — the same thing you can do in the library web UI. It consumes one of the item's allowed renewals and refreshes all entities afterwards.
+
+| Field | Description |
+|---|---|
+| `barcode` | Barcode of the item (exact match) — **or** |
+| `title` | Part of the item title, case-insensitive |
+| `config_entry_id` | Optional, only needed with several configured libraries |
+| `entity_id` | Optional, any entity of this integration — alternative way to pick the library |
+
+One of `barcode`/`title` is required; exactly one item is renewed per call. The action returns a response with `title`, `old_due_date`, `new_due_date` and `renewals_used`/`renewals_max`. If Koha refuses (renewal limit reached, item on hold, …), it raises an error instead.
+
+```yaml
+action: koha.renew_loan
+data:
+  barcode: "0012345678"
+```
+
 ## Flex Table
 
-For a tabular display of all loans, use the community card **flex-table-card** (install via HACS → Frontend). It expands the `checkouts` attribute into one row per loan:
+For a tabular display of all loans, use the community card **flex-table-card** (install via HACS → Frontend). It expands the `checkouts` attribute into one row per loan. The last column renders a renew button per row: tapping it calls `koha.renew_loan` with that row's barcode (passed from a hidden column via `col[3]`), asks for confirmation, and only shows a button while renewals are left:
 
 ```yaml
 type: custom:flex-table-card
@@ -84,8 +104,23 @@ columns:
     data: checkouts.title
   - name: Fällig
     data: checkouts.due_date
-  - name: Verlängerungen
+  - name: Verl.
     data: checkouts.renewals_used
+  - name: barcode
+    data: checkouts.barcode
+    hidden: true
+  - name: ""
+    data: checkouts.renewals_left
+    align: center
+    modify: x > 0 ? '<ha-icon icon="mdi:arrow-u-right-top"></ha-icon>' : '—'
+    tap_action:
+      action: perform-action
+      perform_action: koha.renew_loan
+      target: {}
+      data:
+        barcode: col[3]
+      confirmation:
+        text: Ausleihe „col[0]“ jetzt verlängern?
 ```
 
 ## Disclaimer

@@ -10,15 +10,17 @@ Target entities: `sensor.library_loans`, `sensor.library_next_due`, `calendar.li
 
 ```
 custom_components/koha/
-  __init__.py       HA integration setup
+  __init__.py       HA integration setup, shared DataUpdateCoordinator + service koha.renew_loan
   manifest.json     HA manifest (domain: koha, iot_class: cloud_polling)
-  const.py          DOMAIN, CONF_*, SCAN_INTERVAL_SECONDS (3600)
+  const.py          DOMAIN, CONF_*, SCAN_INTERVAL_SECONDS (3600), SERVICE_RENEW
   config_flow.py    UI-based setup (url, userid, password)
-  client.py         KohaClient (async login + HTML scraping via stdlib)
+  client.py         KohaClient (async login + HTML scraping via stdlib, renew_checkout)
   sensor.py         sensor.library_loans, sensor.library_next_due
   binary_sensor.py  binary_sensor.library_due_today
   calendar.py       calendar.library
-  strings.json      Config flow translations
+  services.yaml     Action schema for koha.renew_loan
+  strings.json      Config flow + action translations (EN source)
+  translations/     de.json (German translations)
 ```
 
 The component is bundled — no pip installs needed. `KohaClient` uses stdlib `html.parser` for scraping and aiohttp for HTTP (provided by HA).

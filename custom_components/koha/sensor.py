@@ -1,16 +1,15 @@
 from __future__ import annotations
 
 import logging
-from datetime import timedelta, datetime
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, CoordinatorEntity
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, SCAN_INTERVAL_SECONDS
-from .client import KohaClient, Checkout
+from .const import DOMAIN
+from .client import Checkout
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -20,20 +19,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    client: KohaClient = hass.data[DOMAIN][entry.entry_id]
-
-    async def _update():
-        await client.login()
-        return await client.get_checkouts()
-
-    coordinator = DataUpdateCoordinator(
-        hass,
-        _LOGGER,
-        name=DOMAIN,
-        update_method=_update,
-        update_interval=timedelta(seconds=SCAN_INTERVAL_SECONDS),
-    )
-    await coordinator.async_config_entry_first_refresh()
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
 
     async_add_entities([
         LoanCountSensor(coordinator, entry),
@@ -76,6 +62,7 @@ class LoanCountSensor(KohaBaseSensor):
                     "author": c.author,
                     "due_date": c.due_date.strftime("%d.%m.%Y") if c.due_date else None,
                     "barcode": c.barcode,
+                    "item_number": c.item_id,
                     "overdue": c.is_overdue,
                     "due_today": c.is_due_today,
                     "renewals_used": c.renewals_used,

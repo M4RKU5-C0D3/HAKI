@@ -4,3 +4,4 @@ CONF_USERID = "userid"
 CONF_PASSWORD = "password"
 
 SCAN_INTERVAL_SECONDS = 3600
+SERVICE_RENEW = "renew_loan"

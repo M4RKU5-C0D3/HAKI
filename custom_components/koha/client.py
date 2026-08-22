@@ -17,6 +17,10 @@ class KohaParseError(Exception):
     pass
 
 
+class KohaRenewError(Exception):
+    pass
+
+
 class Checkout:
     __slots__ = (
         "title",
@@ -172,3 +176,22 @@ class KohaClient:
         parser = CheckoutTableParser()
         parser.feed(html)
         return [Checkout(**c) for c in parser.checkouts]
+
+    async def renew_checkout(self, item_id: int | None) -> Checkout:
+        """Renew a single checkout via the OPAC and return its updated state."""
+        if item_id is None:
+            raise KohaRenewError("Checkout has no item id")
+        await self.login()
+        resp = await self._session.get(
+            f"{self._url}/cgi-bin/koha/opac-renew.pl",
+            params={"from": "opac_user", "item": str(item_id)},
+            allow_redirects=True,
+        )
+        if resp.status != 200:
+            raise KohaRenewError(f"opac-renew.pl returned HTTP {resp.status}")
+        for checkout in await self.get_checkouts():
+            if checkout.item_id == item_id:
+                return checkout
+        raise KohaRenewError(
+            f"Item {item_id} is no longer listed after renewal (renewal rejected or loan ended)"
+        )

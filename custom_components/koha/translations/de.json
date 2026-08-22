@@ -1,0 +1,43 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Mit Koha verbinden",
+        "description": "Gib die OPAC-Adresse deiner Bibliothek und deine Zugangsdaten ein.",
+        "data": {
+          "url": "OPAC-URL der Bibliothek",
+          "userid": "Bibliotheksnummer / Benutzername",
+          "password": "Passwort"
+        }
+      }
+    },
+    "error": {
+      "auth": "Ungültige Zugangsdaten oder Anmeldung fehlgeschlagen",
+      "cannot_connect": "Verbindung zum Bibliotheksserver fehlgeschlagen"
+    }
+  },
+  "services": {
+    "renew_loan": {
+      "name": "Ausleihe verlängern",
+      "description": "Verlängert ein einzelnes ausgeliehenes Medium über den OPAC. Verbraucht eine der erlaubten Verlängerungen dieses Mediums.",
+      "fields": {
+        "barcode": {
+          "name": "Barcode",
+          "description": "Barcode des zu verlängernden Mediums (exakte Übereinstimmung). Entweder dieser oder Titel ist erforderlich."
+        },
+        "title": {
+          "name": "Titel",
+          "description": "Teil des Titels des zu verlängernden Mediums (Groß-/Kleinschreibung egal). Wird verwendet, wenn kein Barcode angegeben ist."
+        },
+        "config_entry_id": {
+          "name": "Bibliothek",
+          "description": "Welche konfigurierte Bibliothek verwendet werden soll. Optional, wenn nur eine eingerichtet ist."
+        },
+        "entity_id": {
+          "name": "Entität",
+          "description": "Beliebige Entität dieser Integration, um bei mehreren konfigurierten Bibliotheken die richtige auszuwählen."
+        }
+      }
+    }
+  }
+}
