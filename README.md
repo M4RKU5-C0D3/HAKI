@@ -90,3 +90,7 @@ columns:
 ## Disclaimer
 
 This is a personal project. It scrapes the public OPAC that every patron uses — it does not access any staff interfaces. Credentials are only used to log you into your own library account.
+
+## Vibe coding
+
+This project was built with AI assistance via [opencode](https://opencode.ai) using the model `big-pickle`. All code was reviewed and released by a human maintainer.
