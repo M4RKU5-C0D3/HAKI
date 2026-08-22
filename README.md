@@ -1,5 +1,8 @@
 # Home Assistant Koha Integration
 
+[![HACS Custom Repository](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/M4RKU5-C0D3/HAKI)
+[![GitHub release](https://img.shields.io/github/v/release/M4RKU5-C0D3/HAKI?style=for-the-badge)](https://github.com/M4RKU5-C0D3/HAKI/releases)
+
 Home Assistant custom component for libraries running the **Koha** library system. It connects directly to the Koha OPAC by logging in with your library credentials and scraping your account page.
 
 ## Why this exists
@@ -16,18 +19,21 @@ So the integration uses the OPAC account page (`/cgi-bin/koha/opac-user.pl`) aft
 
 ## Installation
 
-### Via HACS
+### Via HACS (recommended)
 
-1. HACS → ⋮ → **Custom repositories** → add `M4RKU5-C0D3/HAKI`, category **Integration**
-2. Install "Koha Library" from HACS
-3. Restart Home Assistant
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=M4RKU5-C0D3&repository=HAKI&category=integration)
 
-### Manual
+1. In HACS go to **HACS → ⋮ → Custom repositories**
+2. Add the repository URL `https://github.com/M4RKU5-C0D3/HAKI` with category **Integration**
+3. Click **Download** on "Koha Library"
+4. Restart Home Assistant
+5. Go to **Settings → Devices & Services → Add Integration** → search **"Koha"** and enter your library URL, card number, and password
+
+### Manually
 
 1. Copy the `custom_components/koha/` directory into your HA `config/custom_components/koha/`
 2. Restart Home Assistant
-
-Then go to **Settings → Devices & Services → Add Integration** → search **"Koha"** and enter your library URL, card number, and password.
+3. Go to **Settings → Devices & Services → Add Integration** → search **"Koha"** and enter your library URL, card number, and password
 
 Entity IDs are prefixed with your config entry title — e.g. a config titled "Bücherei" produces `sensor.bucherei_library_loans`.
 

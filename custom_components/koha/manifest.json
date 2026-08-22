@@ -1,7 +1,7 @@
 {
   "domain": "koha",
   "name": "Koha Library",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "requirements": [],
   "dependencies": [],
   "codeowners": [],
