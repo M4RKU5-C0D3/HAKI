@@ -2,6 +2,7 @@
 
 [![HACS Custom Repository](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/M4RKU5-C0D3/HAKI)
 [![GitHub release](https://img.shields.io/github/v/release/M4RKU5-C0D3/HAKI?style=for-the-badge)](https://github.com/M4RKU5-C0D3/HAKI/releases)
+[![Validate](https://img.shields.io/github/actions/workflow/status/M4RKU5-C0D3/HAKI/validate.yml?branch=master&style=for-the-badge&label=Validate)](https://github.com/M4RKU5-C0D3/HAKI/actions/workflows/validate.yml)
 
 Home Assistant custom component for libraries running the **Koha** library system. It connects directly to the Koha OPAC by logging in with your library credentials and scraping your account page.
 
