@@ -5,7 +5,7 @@
 type: custom:flex-table-card
 title: Ausgeliehen
 sort_by:
-  - checkouts.due_date-
+  - checkouts.due_date_iso-
   - checkouts.renewals_left+
 entities:
   include: sensor.bucherei_library_loans

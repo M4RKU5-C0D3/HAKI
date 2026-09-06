@@ -61,6 +61,7 @@ class LoanCountSensor(KohaBaseSensor):
                     "title": c.title,
                     "author": c.author,
                     "due_date": c.due_date.strftime("%d.%m.%Y") if c.due_date else None,
+                    "due_date_iso": c.due_date.isoformat() if c.due_date else None,
                     "barcode": c.barcode,
                     "item_number": c.item_id,
                     "overdue": c.is_overdue,

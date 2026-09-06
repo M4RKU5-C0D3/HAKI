@@ -58,6 +58,7 @@ Attribute `checkouts` is a list of dicts, one per loan:
 | `title` | str | Item title |
 | `author` | str | Item author |
 | `due_date` | str | Due date, German format, e.g. `22.08.2026` |
+| `due_date_iso` | str | Due date, ISO format, e.g. `2026-08-22` |
 | `barcode` | str | Item barcode |
 | `item_number` | int | Internal Koha item number (used by the renew action) |
 | `overdue` | bool | Due date is in the past |
