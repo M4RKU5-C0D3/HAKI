@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -82,6 +82,7 @@ class LoanCountSensor(KohaBaseSensor):
 class NextDueSensor(KohaBaseSensor):
     def __init__(self, coordinator, entry):
         super().__init__(coordinator, entry, "next_due", "Library Next Due")
+        self._attr_device_class = SensorDeviceClass.DATE
 
     @property
     def native_value(self):
@@ -91,4 +92,18 @@ class NextDueSensor(KohaBaseSensor):
         due_dates = [c.due_date for c in checkouts if c.due_date is not None]
         if not due_dates:
             return None
-        return min(due_dates).strftime("%d.%m.%Y")
+        return min(due_dates)
+
+    @property
+    def extra_state_attributes(self):
+        checkouts: list[Checkout] = self.coordinator.data
+        if not checkouts:
+            return {}
+        due_dates = [c.due_date for c in checkouts if c.due_date is not None]
+        if not due_dates:
+            return {}
+        earliest = min(due_dates)
+        return {
+            "iso_format": earliest.isoformat(),
+            "german_format": earliest.strftime("%d.%m.%Y"),
+        }

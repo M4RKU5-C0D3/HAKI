@@ -45,7 +45,7 @@ All entities belong to the "Koha Library" device and update hourly (polling, `io
 | Entity | Type | State | Purpose |
 |---|---|---|---|
 | `sensor.library_loans` | Sensor | Number | Number of currently checked-out items |
-| `sensor.library_next_due` | Sensor | Date | Earliest due date across all loans |
+| `sensor.library_next_due` | Sensor | Date | Earliest due date across all loans (`device_class: date`, rendered in your HA locale) |
 | `binary_sensor.library_due_today` | Binary sensor | on/off | On when at least one item is due today |
 | `calendar.library` | Calendar | — | One event per loan due date |
 
@@ -71,6 +71,15 @@ Additional attributes:
 
 - `overdue_count` — number of overdue items
 - `due_today_count` — number of items due today
+
+### `sensor.library_next_due` attributes
+
+The state is a native `date` (so HA formats it per the user's locale). For templates and automation logic the raw values are also exposed:
+
+| Attribute | Description |
+|---|---|
+| `iso_format` | Earliest due date as `YYYY-MM-DD`, e.g. `2026-08-22` |
+| `german_format` | Earliest due date as `DD.MM.YYYY`, e.g. `22.08.2026` |
 
 ## Renewing a loan
 
