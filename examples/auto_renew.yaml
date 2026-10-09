@@ -1,0 +1,41 @@
+# Verlängert Ausleihen am Fälligkeitstag automatisch, sofern noch
+# Verlängerungen frei sind (koha.renew_loan, ein Medium pro Aufruf).
+# Der Binärsensor „heute fällig" schaltet die Automation ein; die tägliche
+# Zeit dient als Fallback (z. B. wenn HA neu startet).
+# Entity-IDs an den eigenen Config-Entry-Titel anpassen (hier: „Bücherei").
+alias: "Bücherei - Ausleihen automatisch verlängern"
+description: >-
+  Verlängert am Fälligkeitstag alle Medien, die noch Verlängerungen frei
+  haben. Läuft beim Umschalten des Binärsensors und zusätzlich morgens um
+  06:00 als Fallback.
+triggers:
+  - trigger: state
+    entity_id: binary_sensor.bucherei_library_due_today
+    to: "on"
+  - trigger: time
+    at: "06:00:00"
+conditions:
+  - condition: state
+    entity_id: binary_sensor.bucherei_library_due_today
+    state: "on"
+actions:
+  - variables:
+      renew_barcodes: >-
+        {{ state_attr('sensor.bucherei_library_loans', 'checkouts')
+           | selectattr('due_today')
+           | rejectattr('renewals_left', 'none')
+           | selectattr('renewals_left', 'gt', 0)
+           | rejectattr('barcode', 'none')
+           | map(attribute='barcode')
+           | map('string')
+           | list }}
+  - repeat:
+      for_each: "{{ renew_barcodes }}"
+      sequence:
+        # continue_on_error: ein abgelehntes Medium (z. B. Vormerkung) darf die
+        # restlichen Verlängerungen nicht abbrechen.
+        - action: koha.renew_loan
+          continue_on_error: true
+          data:
+            barcode: "{{ repeat.item }}"
+mode: single

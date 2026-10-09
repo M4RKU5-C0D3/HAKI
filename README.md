@@ -94,7 +94,7 @@ The action `koha.renew_loan` renews a single borrowed item through the OPAC — 
 
 One of `barcode`/`title` is required; exactly one item is renewed per call. The action returns a response with `title`, `old_due_date`, `new_due_date` and `renewals_used`/`renewals_max`. If Koha refuses (renewal limit reached, item on hold, …), it raises an error instead.
 
-A ready-to-use example lives in [`examples/renew_loan_action.yaml`](examples/renew_loan_action.yaml).
+For automatic renewal on the due date, see [`examples/auto_renew.yaml`](examples/auto_renew.yaml) — an automation that renews every item eligible for renewal (`due_today` with renewals left), once per item.
 
 ## Flex Table
 
